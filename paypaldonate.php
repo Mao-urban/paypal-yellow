@@ -39,6 +39,9 @@ class YellowPayPalDonate {
     // 🎨 Frontend (base-path safe)
     private function renderUI() {
         $clientId = $this->yellow->config->get("paypaldonateClientId");
+            if (empty($clientId)) {
+                return '<div style="color:red;">PayPal Client ID not configured.</div>';
+            }
         $currency = $this->yellow->config->get("paypaldonateCurrency");
         $base = $this->yellow->config->get("coreServerBase");
 
@@ -117,7 +120,9 @@ class YellowPayPalDonate {
         $clientId = $this->yellow->config->get("paypaldonateClientId");
         $secret = $this->yellow->config->get("paypaldonateSecret");
         $mode = $this->yellow->config->get("paypaldonateMode");
-
+        if (empty($clientId) || empty($secret)) {
+            return [null, null];
+        }
         $baseUrl = $mode === "live"
             ? "https://api-m.paypal.com"
             : "https://api-m.sandbox.paypal.com";
